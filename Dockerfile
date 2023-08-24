@@ -2,7 +2,7 @@ FROM python:3.11.4-bookworm
 
 WORKDIR /app
 
-ADD ./app /app
+COPY app/ /app
 
 RUN pip3 install dash
 RUN pip3 install pandas

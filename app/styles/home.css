@@ -1,0 +1,16 @@
+.header {
+    font-size: larger;
+}
+
+.message {
+    font-size: 1rem;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputLabel {
+    margin-bottom: 0.75rem;
+}
