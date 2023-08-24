@@ -9,21 +9,26 @@ external_stylesheets = [dbc.themes.CERULEAN]
 app = Dash(__name__, external_stylesheets=external_stylesheets)
 
 # App layout
-app.layout = dbc.Container([
-    dbc.Row([
-        html.Div([
-            dbc.Label("x_1"),
-            dbc.Input(id="x_1", type="number", placeholder="Put a value for x_1"),
-            dbc.Label("x_2"),
-            dbc.Input(id="x_2", type="number", placeholder="Put a value for x_2"),
-            dbc.Button(id="submit", children="calculate y", color="primary", className="me-1"),
-            dbc.Label("y is: "),
-            html.Output(id="y", children="")
-        ],
-        className="mb-3")
-    ])
+app.layout =html.Div([
+    html.Div(children=[
+        html.H1('Welcome to Chakky Car Center'),
+        html.H2("With our advance AI, you can customize your car and check the possible values") 
+    ]),
 
-], fluid=True)
+    html.Form(children=[
+        html.Div([
+            dbc.Label("Enter the engine: "),
+            dbc.Input(id="engine", type="number", placeholder="Enter the engine")
+        ]),
+
+        html.Div([
+            dbc.Label("Enter the maxpower: "),
+            dbc.Input(id="maxPower", type="number", placeholder="Enter the maxpower")
+        ]),
+
+        dbc.Button(id="submit", children="Submit", color="primary")
+    ])
+])
 
 @callback(
     Output(component_id="y", component_property="children"),
@@ -32,8 +37,7 @@ app.layout = dbc.Container([
     Input(component_id="submit", component_property='n_clicks'),
     prevent_initial_call=True
 )
-def calculate_y(x_1, x_2, submit):
-    return x_1 + x_2
+
 # Run the app
 if __name__ == '__main__':
     app.run_server(host='0.0.0.0', port=8050)
