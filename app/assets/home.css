@@ -1,0 +1,35 @@
+.header {
+    font-size: larger;
+}
+
+.layout {
+    padding: 1.5rem;
+}
+
+.message {
+    font-size: 1rem;
+}
+
+.form {
+    display: grid;
+    grid-gap: 1rem;
+    margin-top: 1rem
+}
+
+.form-fields {
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.inputLabel {
+    margin-bottom: 0.75rem;
+}
+
+.price-output {
+    margin: 1rem 0;
+}
+
+.submit {
+    width: fit-content;
+}

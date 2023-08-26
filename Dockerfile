@@ -7,6 +7,7 @@ COPY app/ /app
 RUN pip3 install dash
 RUN pip3 install pandas
 RUN pip3 install dash_bootstrap_components
+RUN pip3 install scikit-learn
 
 EXPOSE 8050
 
