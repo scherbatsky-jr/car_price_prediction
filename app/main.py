@@ -4,6 +4,7 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 import pickle
 import numpy as np
+import pandas as pd
 
 loaded_model = pickle.load(open("./model/selling-price.model", "rb"))
 
@@ -139,14 +140,11 @@ app.layout =html.Div([
     Output("output-div", "children"),
     Input("submit-button", "n_clicks"),
     State("mileage-input", "value"),
-    State("engine-input", "value"),
     State("max-power-input", "value"),
     prevent_initial_call=True
-    # State("max-power-input", "value"),
-    # Add other input components here
 )
-def submit_form(n_clicks, mileage, engine, max_power):
-    predicted_selling_price = loaded_model.predict(np.array([[engine, max_power, mileage]]))
+def submit_form(n_clicks, mileage = 0, max_power = 0):
+    predicted_selling_price = loaded_model.predict(pd.DataFrame({'mileage': [float(mileage)], 'max_power': [float(max_power)]}))
 
     predicted_selling_price = "{:,.2f}".format(np.exp(predicted_selling_price)[0])
 
