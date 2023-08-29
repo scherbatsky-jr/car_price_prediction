@@ -1,7 +1,27 @@
 # Car Price Prediction App
 
-### Submitted by: Sunil Prajapati (124073)
+**Submitted by: Sunil Prajapati**
 
+**Student ID: 124073**
+
+
+### App Directory Structure
+
+```
+app
+├── Dockerfile
+├── docker-compose.yml
+├── code
+│   └── main.py
+│   ├── car_price_prediction.ipynb
+│   ├── assets
+│       └── home.css
+├── dataset
+│   └── cars.csv
+└── model
+    ├── scaler.pkl
+    └── selling-price.model
+```
 
 ### Requirements
 - Docker
