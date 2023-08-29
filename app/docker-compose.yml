@@ -9,4 +9,5 @@ services:
     ports:
       - "8050:8050"
     volumes:
-      - ./app:/app
+      - ./code:/app/code
+      - ./model:/app/model

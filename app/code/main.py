@@ -2,11 +2,15 @@
 from dash import Dash, dcc, html, callback
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
-import numpy as np
+import os 
 import pickle
 
+# Defining absolute path
+absolute_path = os.path.dirname(__file__)
+
 # Loading the model
-loaded_model = pickle.load(open("./model/selling-price.model", "rb"))
+model_path = os.path.join(absolute_path, '../model/selling-price.model')
+loaded_model = pickle.load(open(model_path, "rb"))
 
 # Initialize the app - incorporate a Dash Bootstrap theme
 external_stylesheets = [dbc.themes.CERULEAN]
@@ -26,7 +30,7 @@ brand_options = [
 # App layout
 app.layout =html.Div([
     html.Div(children=[
-        html.Div('Welcome to Sunil Car Center', className="header"),
+        html.Div('Welcome to Advanced Car Center', className="header"),
         html.Div("With our advance AI, you can fill in the fields in the forms below to get the best price estimation for such vehicles.", className="message") 
     ]),
 
@@ -159,11 +163,11 @@ app.layout =html.Div([
 def submit_form(n_clicks, mileage, max_power):
     # mileage = 0 if mileage is None else float(mileage)
     # max_power = 0 if max_power is None else float(max_power)
-    predicted_selling_price = loaded_model.predict(np.array([[float(max_power), float(mileage)]]))
+    # predicted_selling_price = loaded_model.predict(np.array([[float(max_power), float(mileage)]]))
 
-    predicted_selling_price = "{:,.2f}".format(np.exp(predicted_selling_price)[0])
+    # predicted_selling_price = "{:,.2f}".format(np.exp(predicted_selling_price)[0])
 
-    return f"Based on your input, the predicted selling price of such car is {predicted_selling_price}"
+    return f"Based on your input, the predicted selling price of such car is "
 
 
 # Run the app
