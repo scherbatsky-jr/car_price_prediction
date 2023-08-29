@@ -7,21 +7,22 @@
 
 ### App Directory Structure
 
-```
+<pre>
 app
-├── Dockerfile
-├── docker-compose.yml
-├── code
-│   └── main.py
-│   ├── car_price_prediction.ipynb
+├── <a href="https://github.com/scherbatsky-jr/car_price_prediction/blob/main/app/Dockerfile">Dockerfile</a>
+├── <a href="https://github.com/scherbatsky-jr/car_price_prediction/blob/main/app/docker-compose.yml">docker-compose.yml</a>
+├── <a href="https://github.com/scherbatsky-jr/car_price_prediction/blob/main/app/code">code</a>
+│   └── <a href="https://github.com/scherbatsky-jr/car_price_prediction/blob/main/app/code/main.py">main.py</a>
+│   ├── <a href="https://github.com/scherbatsky-jr/car_price_prediction/blob/main/app/code/car_price_prediction.ipynb">car_price_prediction.ipynb</a>
 │   ├── assets
 │       └── home.css
-├── dataset
+├── <a href="https://github.com/scherbatsky-jr/car_price_prediction/blob/main/app/dataset">dataset</a>
 │   └── cars.csv
-└── model
+└── <a href="https://github.com/scherbatsky-jr/car_price_prediction/blob/main/app/model">model</a>
     ├── scaler.pkl
     └── selling-price.model
-```
+</pre>
+
 
 ### Requirements
 - Docker
