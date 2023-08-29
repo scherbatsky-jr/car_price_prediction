@@ -2,6 +2,7 @@ version: '3'
 services:
   dash_app:
     container_name: price_predictor
+    platform: linux/arm64/v8
     build:
       context: .
       dockerfile: Dockerfile

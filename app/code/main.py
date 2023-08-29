@@ -2,16 +2,18 @@
 from dash import Dash, dcc, html, callback
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
-import pickle
 import numpy as np
-import pandas as pd
+import pickle
 
+# Loading the model
 loaded_model = pickle.load(open("./model/selling-price.model", "rb"))
 
 # Initialize the app - incorporate a Dash Bootstrap theme
 external_stylesheets = [dbc.themes.CERULEAN]
 app = Dash(__name__, external_stylesheets=external_stylesheets)
 
+
+# Importing the brand names 
 brand_options = [
     'Ambassador', 'Ashok', 'Audi', 'BMW', 'Chevrolet', 'Daewoo',
     'Datsun', 'Fiat', 'Force', 'Ford', 'Honda', 'Hyundai', 'Isuzu',
@@ -24,8 +26,8 @@ brand_options = [
 # App layout
 app.layout =html.Div([
     html.Div(children=[
-        html.Div('Welcome to New Car Center', className="header"),
-        html.Div("With our advance AI, you can customize your car and check the possible value", className="message") 
+        html.Div('Welcome to Sunil Car Center', className="header"),
+        html.Div("With our advance AI, you can fill in the fields in the forms below to get the best price estimation for such vehicles.", className="message") 
     ]),
 
     html.Div(children=[
@@ -76,43 +78,53 @@ app.layout =html.Div([
                     ]
                 ),
 
-                html.Div([
-                   dbc.Label("Transmission"),
-                    dcc.Dropdown(
-                        options=[
-                            {"label": "Manual", "value": "Manual"},
-                            {"label": "Automatic", "value": "Automatic"},
-                        ],
-                        value=None,
-                    ),
-                ]),
+                html.Div(
+                    [
+                        dbc.Label("Transmission"),
+                        dcc.Dropdown(
+                            options=[
+                                {"label": "Manual", "value": "Manual"},
+                                {"label": "Automatic", "value": "Automatic"},
+                            ],
+                            value=None,
+                        ),
+                    ]
+                ),
 
-                html.Div([
-                    dbc.Label("Mileage"),
-                    dbc.Input(id="mileage-input", type="number", placeholder="Enter the mileage")
-                ]),
+                html.Div(
+                    [
+                        dbc.Label("Mileage"),
+                        dbc.Input(id="mileage-input", type="number", placeholder="Enter the mileage", required=False)
+                    ]
+                ),
 
-                html.Div([
-                    dbc.Label("Engine (CC)"),
-                    dbc.Input(id="engine-input", type="number", placeholder="Enter the engine")
-                ]),
+                html.Div(
+                    [
+                        dbc.Label("Engine (CC)"),
+                        dbc.Input(id="engine-input", type="number", placeholder="Enter the engine", required=False)
+                    ]
+                ),
 
-                html.Div([
-                    dbc.Label("Max Power"),
-                    dbc.Input(id="max-power-input", type="number", placeholder="Enter the maxpower")
-                ]),
+                html.Div(
+                    [
+                        dbc.Label("Max Power"),
+                        dbc.Input(id="max-power-input", type="number", placeholder="Enter the maxpower", required=False)
+                    ]
+                ),
 
-                html.Div([
-                    dbc.Label("Owner"),
-                    dcc.Dropdown(
-                        options=[
-                            {"label": "First Owner", "value": "First Owner"},
-                            {"label": "Second Owner", "value": "Second Owner"},
-                            {"label": "Third Owner", "value": "Third Owner"},
-                        ],
-                        value=None,
-                    ),
-                ]),
+                html.Div(
+                    [
+                        dbc.Label("Owner"),
+                        dcc.Dropdown(
+                            options=[
+                                {"label": "First Owner", "value": "First Owner"},
+                                {"label": "Second Owner", "value": "Second Owner"},
+                                {"label": "Third Owner", "value": "Third Owner"},
+                            ],
+                            value=None,
+                        ),
+                    ]
+                ),
 
                 html.Div(
                     [
@@ -120,6 +132,7 @@ app.layout =html.Div([
                         dbc.Input(type="number", value=None),
                     ]
                 ),
+                
                 html.Div(
                     [
                         dbc.Label("Seats"),
@@ -143,13 +156,15 @@ app.layout =html.Div([
     State("max-power-input", "value"),
     prevent_initial_call=True
 )
-def submit_form(n_clicks, mileage = 0, max_power = 0):
-    predicted_selling_price = loaded_model.predict(pd.DataFrame({'mileage': [float(mileage)], 'max_power': [float(max_power)]}))
+def submit_form(n_clicks, mileage, max_power):
+    # mileage = 0 if mileage is None else float(mileage)
+    # max_power = 0 if max_power is None else float(max_power)
+    predicted_selling_price = loaded_model.predict(np.array([[float(max_power), float(mileage)]]))
 
     predicted_selling_price = "{:,.2f}".format(np.exp(predicted_selling_price)[0])
 
     return f"Based on your input, the predicted selling price of such car is {predicted_selling_price}"
-    
+
 
 # Run the app
 if __name__ == '__main__':
