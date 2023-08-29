@@ -1,5 +1,10 @@
 .header {
-    font-size: larger;
+    font-size: 2rem;
+}
+
+.error-message {
+    color: red;
+    font-style: italic;
 }
 
 .layout {
@@ -8,6 +13,7 @@
 
 .message {
     font-size: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .form {
@@ -19,7 +25,7 @@
 .form-fields {
     display: grid;
     grid-gap: 1rem;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
 }
 
 .inputLabel {
@@ -32,4 +38,16 @@
 
 .submit {
     width: fit-content;
+}
+
+@media (min-width: 480px) {
+    .form-fields {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 992px) {
+    .form-fields {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
 }

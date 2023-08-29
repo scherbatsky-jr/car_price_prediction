@@ -2,7 +2,9 @@
 from dash import Dash, dcc, html, callback
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
+import numpy as np
 import os 
+import pandas as pd
 import pickle
 
 # Defining absolute path
@@ -11,6 +13,10 @@ absolute_path = os.path.dirname(__file__)
 # Loading the model
 model_path = os.path.join(absolute_path, '../model/selling-price.model')
 loaded_model = pickle.load(open(model_path, "rb"))
+
+# Loading the sclaer
+scaler_path = os.path.join(absolute_path, '../model/scaler.pkl')
+scaler = pickle.load(open(scaler_path, 'rb'))
 
 # Initialize the app - incorporate a Dash Bootstrap theme
 external_stylesheets = [dbc.themes.CERULEAN]
@@ -31,7 +37,8 @@ brand_options = [
 app.layout =html.Div([
     html.Div(children=[
         html.Div('Welcome to Advanced Car Center', className="header"),
-        html.Div("With our advance AI, you can fill in the fields in the forms below to get the best price estimation for such vehicles.", className="message") 
+        html.Div("With our advance AI, Get the best price estimation for vehicle of your need!!!!", className="message"),
+        html.Strong("FILL ALL THE FIELDS FOR THE BEST RESULTS !!")
     ]),
 
     html.Div(children=[
@@ -39,66 +46,9 @@ app.layout =html.Div([
             [
                 html.Div(
                     [
-                        dbc.Label("Brand"),
-                        dcc.Dropdown(
-                            id="brand-input",
-                            options=[{"label": brand, "value": brand} for brand in brand_options],
-                            value=None,
-                        ),
-                    ]
-                ),
-
-                html.Div(
-                    [
-                        dbc.Label("Year"),
-                        dcc.Dropdown(
-                            id="year-input",
-                            options=[
-                                {"label": str(year), "value": year}
-                                for year in range(1970, 2024)
-                            ],
-                            value=None,
-                        ),
-                    ]
-                ),
-
-                html.Div(
-                    [
-                        dbc.Label("Fuel Type"),
-                        dcc.Dropdown(
-                            options=[
-                                {"label": "Diesel", "value": "Diesel"},
-                                {"label": "Petrol", "value": "Petrol"},
-                            ],
-                            value=None,
-                        ),
-                    ]
-                ),
-
-                html.Div(
-                    [
-                        dbc.Label("Kilometre Driven"),
-                        dbc.Input(type="number", value=None),
-                    ]
-                ),
-
-                html.Div(
-                    [
-                        dbc.Label("Transmission"),
-                        dcc.Dropdown(
-                            options=[
-                                {"label": "Manual", "value": "Manual"},
-                                {"label": "Automatic", "value": "Automatic"},
-                            ],
-                            value=None,
-                        ),
-                    ]
-                ),
-
-                html.Div(
-                    [
-                        dbc.Label("Mileage"),
+                        dbc.Label("Mileage (kmpl)"),
                         dbc.Input(id="mileage-input", type="number", placeholder="Enter the mileage", required=False)
+
                     ]
                 ),
 
@@ -111,41 +61,15 @@ app.layout =html.Div([
 
                 html.Div(
                     [
-                        dbc.Label("Max Power"),
+                        dbc.Label("Max Power (bhp)"),
                         dbc.Input(id="max-power-input", type="number", placeholder="Enter the maxpower", required=False)
-                    ]
-                ),
-
-                html.Div(
-                    [
-                        dbc.Label("Owner"),
-                        dcc.Dropdown(
-                            options=[
-                                {"label": "First Owner", "value": "First Owner"},
-                                {"label": "Second Owner", "value": "Second Owner"},
-                                {"label": "Third Owner", "value": "Third Owner"},
-                            ],
-                            value=None,
-                        ),
-                    ]
-                ),
-
-                html.Div(
-                    [
-                        dbc.Label("Torque"),
-                        dbc.Input(type="number", value=None),
-                    ]
-                ),
-                
-                html.Div(
-                    [
-                        dbc.Label("Seats"),
-                        dbc.Input(type="number", value=None),
                     ]
                 ),
             ],
             className="form-fields"
         ),
+
+        html.Output(id="error-div", className="error-message"),
 
         dbc.Button(id="submit-button", children="Submit", color="primary", className="submit"),
     ], className="form"),
@@ -154,20 +78,31 @@ app.layout =html.Div([
 ], className="layout")
 
 @callback(
+    Output("error-div", "children"),
     Output("output-div", "children"),
     Input("submit-button", "n_clicks"),
     State("mileage-input", "value"),
     State("max-power-input", "value"),
+    State("engine-input", "value"),
     prevent_initial_call=True
 )
-def submit_form(n_clicks, mileage, max_power):
-    # mileage = 0 if mileage is None else float(mileage)
-    # max_power = 0 if max_power is None else float(max_power)
-    # predicted_selling_price = loaded_model.predict(np.array([[float(max_power), float(mileage)]]))
+def submit_form(n_clicks, mileage, max_power, engine):
+    if mileage is None or max_power is None or engine is None:
+        return f"All fields are required.", ' '
 
-    # predicted_selling_price = "{:,.2f}".format(np.exp(predicted_selling_price)[0])
+    input = pd.DataFrame({
+        'max_power': [max_power],
+        'engine': [engine],
+        'mileage': [mileage]
+    })
 
-    return f"Based on your input, the predicted selling price of such car is "
+    input = scaler.transform(input)
+
+    predictions = loaded_model.predict(input)
+
+    predicted_selling_price = "{:,.2f}".format(np.exp(predictions)[0])
+
+    return '', f"Based on your input, the predicted selling price of such car is {predicted_selling_price} Baht"
 
 
 # Run the app
