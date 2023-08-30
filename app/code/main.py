@@ -36,7 +36,7 @@ brand_options = [
 # App layout
 app.layout =html.Div([
     html.Div(children=[
-        html.Div('Welcome to Advanced Car Center', className="header"),
+        html.Div('Welcome to New Car Center', className="header"),
         html.Div("With our advance AI, Get the best price estimation for vehicle of your need!!!!", className="message"),
         html.Strong("FILL ALL THE FIELDS FOR THE BEST RESULTS !!")
     ]),

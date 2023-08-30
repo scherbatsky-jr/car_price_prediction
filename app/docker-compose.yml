@@ -3,8 +3,8 @@ version: '3'
 services:
   dash_app:
     container_name: price_predictor
-    image: scherbatskyjr/price-predictor:0.1
-    platform: linux/arm64/v8
+    image: scherbatskyjr/price-predictor:0.2
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
