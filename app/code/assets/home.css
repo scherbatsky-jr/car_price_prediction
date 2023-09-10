@@ -40,6 +40,24 @@
     width: fit-content;
 }
 
+.versions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
+    padding: 1rem;
+    width: fit-content;
+}
+
+.version-link {
+    border-radius: 0.5rem;
+    box-shadow: grey 1px 1px 4px 0px;
+    height: 6rem;
+    padding-top: 2.25rem;
+    text-align: center;
+    text-decoration: none;
+    width: 6rem;
+}
+
 @media (min-width: 480px) {
     .form-fields {
         grid-template-columns: 1fr 1fr;
