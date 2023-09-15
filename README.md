@@ -23,6 +23,7 @@ app
 └── <a href="https://github.com/scherbatsky-jr/car_price_prediction/blob/main/app/model">model</a>
     ├── scaler.pkl
     └── selling-price.model
+    └── v2-model.pkl
 </pre>
 
 
