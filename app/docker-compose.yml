@@ -3,13 +3,13 @@ version: '3'
 services:
   dash_app:
     container_name: price_predictor
-    image: scherbatskyjr/price-predictor:0.3
+    # image: scherbatskyjr/price-predictor:0.3
     platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "8050:8050"
     volumes:
       - ./code:/app/code
       - ./model:/app/model

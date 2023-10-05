@@ -12,6 +12,6 @@ RUN pip3 install scikit-learn
 RUN pip3 install xgboost
 RUN pip3 install mlflow
 
-EXPOSE 80
+EXPOSE 8050
 
 CMD ["python", "code/main.py"]

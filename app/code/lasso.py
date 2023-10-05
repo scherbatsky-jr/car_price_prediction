@@ -4,7 +4,6 @@ from sklearn.metrics import r2_score
 import math
 import mlflow
 
-
 class Regression(object):
     kfold = KFold(n_splits=3)
             
