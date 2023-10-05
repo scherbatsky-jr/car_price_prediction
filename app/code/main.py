@@ -6,8 +6,8 @@ import numpy as np
 import os 
 import pandas as pd
 import pickle
-from lasso import Lasso, LassoPenalty
-from ridge import Ridge, RidgePenalty
+from lib.lasso import Lasso, LassoPenalty
+from lib.ridge import Ridge, RidgePenalty
 
 # Defining absolute path
 absolute_path = os.path.dirname(__file__)

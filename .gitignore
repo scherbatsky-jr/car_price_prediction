@@ -1,3 +1,4 @@
 .vscode-server
 
 app/code/mlruns
+app/code/__pycache__
