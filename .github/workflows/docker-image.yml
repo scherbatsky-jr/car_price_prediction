@@ -19,7 +19,7 @@ jobs:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-          docker build -t your-scherbatskyjr/price-predictor:0.4 app
+          docker build -t scherbatskyjr/price-predictor:0.4 app
           docker push scherbatskyjr/price-predictor:0.4
 
   # deploy:
