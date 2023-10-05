@@ -13,29 +13,29 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Docker
-        uses: docker/setup-action@v2
-
-      - name: Build Docker image
-        run: docker build -t scherbatskyjr/price-predictor:0.4 .
-
-      - name: Push Docker image
-        run: docker push scherbatskyjr/price-predictor:0.4
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: SSH into your server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-
-      - name: Pull and run Docker image on the server
+      - name: Build and push Docker image
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
-          docker pull scherbatskyjr/price-predictor:0.4
-          docker run -d -p 80:80 scherbatskyjr/price-predictor:0.4
+          echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+          docker build -t your-scherbatskyjr/price-predictor:0.4 .
+          docker push scherbatskyjr/price-predictor:0.4
+
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: SSH into your server
+  #       uses: appleboy/ssh-action@master
+  #       with:
+  #         host: ${{ secrets.SERVER_IP }}
+  #         username: ${{ secrets.SERVER_USERNAME }}
+  #         key: ${{ secrets.SSH_PRIVATE_KEY }}
+  #         port: 22
+
+  #     - name: Pull and run Docker image on the server
+  #       run: |
+  #         docker pull scherbatskyjr/price-predictor:0.4
+  #         docker run -d -p 80:80 scherbatskyjr/price-predictor:0.4
