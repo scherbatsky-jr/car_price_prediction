@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8050:8050"
+      - "80:80"
     volumes:
       - ./code:/app/code
       - ./model:/app/model
