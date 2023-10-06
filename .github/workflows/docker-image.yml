@@ -22,21 +22,18 @@ jobs:
           docker build -t scherbatskyjr/price-predictor:0.4 app
           docker push scherbatskyjr/price-predictor:0.4
 
-  # deploy:
-  #   runs-on: ubuntu-latest
-    
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
-
-  #     - name: Use SSH configurations
-  #       uses: appleboy/ssh-action@master
-  #       with:
-  #         ssh_key: ${{ secrets.SSH_PRIVATE_KEY }}
-  #         host: ml2023
-  #         username: st124073
-  #         port: 22
-
-  #     - name: Deploy to Server
-  #       run: |
-  #         ssh ml2023 'cd dash && docker-compose up -d'
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH Remote Commands
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ vars.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          proxy_host: ${{ vars.PROXY_HOST }}
+          proxy_username: ${{ secrets.USERNAME }}
+          proxy_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            mkdir new_folder
