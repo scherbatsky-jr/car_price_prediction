@@ -9,6 +9,10 @@ import pickle
 from lib.lasso import Lasso, LassoPenalty
 from lib.ridge import Ridge, RidgePenalty
 
+from pages.v1 import v1_layout
+from pages.v2 import v2_layout
+from pages.v3 import v3_layout
+
 # Defining absolute path
 absolute_path = os.path.dirname(__file__)
 
@@ -46,135 +50,6 @@ home_layout = html.Div([
     ], className="versions"),
 ])
 
-v1_layout = html.Div([
-    dcc.Link('Back to home page', href="/"),
-    html.Div(children=[
-        html.Div('You are predicting using Version 1 model!!!!!', className="header"),
-        html.Div("With our advance AI, Get the best price estimation for vehicle of your need!!!!", className="message"),
-    ]),
-
-    html.Div(children=[
-        html.Div(
-            [
-                html.Div(
-                    [
-                        dbc.Label("Mileage (kmpl)"),
-                        dbc.Input(id="mileage-input-1", type="number", placeholder="Enter the mileage", required=False)
-
-                    ]
-                ),
-
-                html.Div(
-                    [
-                        dbc.Label("Engine (CC)"),
-                        dbc.Input(id="engine-input-1", type="number", placeholder="Enter the engine", required=False)
-                    ]
-                ),
-
-                html.Div(
-                    [
-                        dbc.Label("Max Power (bhp)"),
-                        dbc.Input(id="max-power-input-1", type="number", placeholder="Enter the maxpower", required=False)
-                    ]
-                ),
-            ],
-            className="form-fields"
-        ),
-
-        html.Output(id="error-div-1", className="error-message"),
-
-        dbc.Button(id="submit-button-1", children="Submit", color="primary", className="submit"),
-    ], className="form"),
-
-    html.Output(id="output-div-1", className="price-output"),
-])
-
-v2_layout = html.Div([
-    html.Div(children=[
-        dcc.Link('Back to home page', href="/"),
-        html.Div('Get better with our updated version 2 model !!!!', className="header"),
-        html.Div("With our advance AI, Get the best price estimation for vehicle of your need!!!!", className="message"),
-    ]),
-
-    html.Div(children=[
-        html.Div(
-            [
-                html.Div(
-                    [
-                        dbc.Label("Mileage (kmpl)"),
-                        dbc.Input(id="mileage-input-2", type="number", placeholder="Enter the mileage", required=False)
-
-                    ]
-                ),
-
-                html.Div(
-                    [
-                        dbc.Label("Engine (CC)"),
-                        dbc.Input(id="engine-input-2", type="number", placeholder="Enter the engine", required=False)
-                    ]
-                ),
-
-                html.Div(
-                    [
-                        dbc.Label("Max Power (bhp)"),
-                        dbc.Input(id="max-power-input-2", type="number", placeholder="Enter the maxpower", required=False)
-                    ]
-                ),
-            ],
-            className="form-fields"
-        ),
-
-        html.Output(id="error-div-2", className="error-message"),
-
-        dbc.Button(id="submit-button-2", children="Submit", color="primary", className="submit"),
-    ], className="form"),
-
-    html.Output(id="output-div-2", className="price-output"),
-])
-
-v3_layout = html.Div([
-    html.Div(children=[
-        dcc.Link('Back to home page', href="/"),
-        html.Div('Get better with our updated version 3 model !!!!', className="header"),
-        html.Div("With our advance AI, Get the best price estimation for vehicle of your need!!!!", className="message"),
-    ]),
-
-    html.Div(children=[
-        html.Div(
-            [
-                html.Div(
-                    [
-                        dbc.Label("Mileage (kmpl)"),
-                        dbc.Input(id="mileage-input-3", type="number", placeholder="Enter the mileage", required=False)
-
-                    ]
-                ),
-
-                html.Div(
-                    [
-                        dbc.Label("Engine (CC)"),
-                        dbc.Input(id="engine-input-3", type="number", placeholder="Enter the engine", required=False)
-                    ]
-                ),
-
-                html.Div(
-                    [
-                        dbc.Label("Max Power (bhp)"),
-                        dbc.Input(id="max-power-input-3", type="number", placeholder="Enter the maxpower", required=False)
-                    ]
-                ),
-            ],
-            className="form-fields"
-        ),
-
-        html.Output(id="error-div-3", className="error-message"),
-
-        dbc.Button(id="submit-button-3", children="Submit", color="primary", className="submit"),
-    ], className="form"),
-
-    html.Output(id="output-div-3", className="price-output"),
-])
-
 @app.callback(
     Output('page-content', 'children'),
     Input('url', 'pathname')
@@ -198,7 +73,7 @@ def display_page(pathname):
     State("engine-input-1", "value"),
     prevent_initial_call=True
 )
-def submit_form(n_clicks, mileage, max_power, engine):
+def submit_v1_form(n_clicks, mileage, max_power, engine):
     if mileage is None or max_power is None or engine is None:
         return f"All fields are required.", ' '
 
@@ -226,7 +101,7 @@ def submit_form(n_clicks, mileage, max_power, engine):
     State("engine-input-2", "value"),
     prevent_initial_call=True
 )
-def submit_form(n_clicks, mileage, max_power, engine):
+def submit_v2_form(n_clicks, mileage, max_power, engine):
     if mileage is None or max_power is None or engine is None:
         return f"All fields are required.", ' '
 
@@ -257,7 +132,7 @@ def submit_form(n_clicks, mileage, max_power, engine):
     State("engine-input-3", "value"),
     prevent_initial_call=True
 )
-def submit_form(n_clicks, mileage, max_power, engine):
+def submit_v3_form(n_clicks, mileage, max_power, engine):
     if mileage is None or max_power is None or engine is None:
         return f"All fields are required.", ' '
 
@@ -275,7 +150,7 @@ def submit_form(n_clicks, mileage, max_power, engine):
 
     predictions = v3_model.predict(input)
 
-    return '', f"Based on your input, the predicted selling price category of such car is {predictions[0]}"
+    return '', f"Based on your input, the predicted selling price category is of such car is {predictions[0]}"
 
 # App layout
 app.layout =html.Div([

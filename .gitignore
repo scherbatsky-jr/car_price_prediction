@@ -1,4 +1,6 @@
 .vscode-server
 
+app/.pytest_cache
 app/code/mlruns
-app/code/__pycache__
+app/**/__pycache__
+app/**/**/__pycache__
