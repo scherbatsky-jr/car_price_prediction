@@ -6,24 +6,32 @@ on:
       - "0.3"
 
 jobs:
-  build:
+  build-test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Build and push Docker image
+      - name: Build and run docker image
+        run: |
+          docker build -t scherbatskyjr/price-predictor:0.4 app
+          docker run -d dash_app scherbatskyjr/price-predictor:0.4
+
+      - name: Testing
+        run: |
+          docker exec dash_app pytest
+
+      - name: Push Docker image
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-          docker build -t scherbatskyjr/price-predictor:0.4 app
           docker push scherbatskyjr/price-predictor:0.4
 
   deploy:
-    needs: build
+    needs: build-test
     runs-on: ubuntu-latest
     steps:
       - name: SSH Remote Commands
