@@ -20,7 +20,7 @@ jobs:
         run: |
           docker build -t scherbatskyjr/price-predictor:0.4 app
           echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-          docker run -d dash_app scherbatskyjr/price-predictor:0.4
+          docker run -d --name dash_app scherbatskyjr/price-predictor:0.4
 
       - name: Testing
         run: |
