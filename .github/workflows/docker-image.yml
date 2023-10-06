@@ -14,8 +14,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build and run docker image
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           docker build -t scherbatskyjr/price-predictor:0.4 app
+          echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
           docker run -d dash_app scherbatskyjr/price-predictor:0.4
 
       - name: Testing
@@ -23,11 +27,7 @@ jobs:
           docker exec dash_app pytest
 
       - name: Push Docker image
-        env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
-          echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
           docker push scherbatskyjr/price-predictor:0.4
 
   deploy:
