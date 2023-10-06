@@ -275,7 +275,7 @@ def submit_form(n_clicks, mileage, max_power, engine):
 
     predictions = v3_model.predict(input)
 
-    return '', f"Based on your input, the predicted selling price of such car is {predictions[0]}"
+    return '', f"Based on your input, the predicted selling price category of such car is {predictions[0]}"
 
 # App layout
 app.layout =html.Div([

@@ -38,4 +38,5 @@ jobs:
           script: |
             cd dash
             docker compose down
+            docker compose pull
             docker compose up -d
